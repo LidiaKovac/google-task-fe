@@ -11,3 +11,13 @@
 .option__wrap:last-of-type {
     border-bottom: none;
 }
+
+.option__wrap svg {
+    display: none;
+    position: absolute;
+    right: 10px
+}
+
+.option__wrap:hover svg {
+    display: inline;
+}
