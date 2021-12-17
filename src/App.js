@@ -9,14 +9,21 @@ import { Modal } from "./components/Modal/Modal";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState("")
   useEffect(() => {
     //in the beginning, we want to see ALL tasks
     if (!tasks) {
       getTasks().then((res) => setTasks(res));
     }
   }, [tasks]);
+  useEffect(() => {
+    //in the beginning, we want to see ALL tasks
+    // if (!tasks) {
+      getTasks().then((res) => setTasks( selected ? res.filter(task => task.plannerId === selected) : res));
+    // }
+  }, [selected, open]);
   const setDone = (id) => {
-    checkTask(id).then((res) => setTasks(res));
+    checkTask(id).then(res => setTasks(selected ? res.filter(task => task.plannerId === selected) : res));
   };
   //trigger state-lifting which will
   // - change the sql "isDone" column for into true
@@ -27,8 +34,8 @@ function App() {
       <div className="app__wrap">
         <img src="/assets/logo.png" alt="logo" />
         <div className="app__header">
-          <Dropdown fetchSelPlanner={(tasks) => setTasks(tasks)} />
-          <div className="app__plus" onClick={()=> setOpen(true)}>
+          <Dropdown fetchSelPlanner={(tasks, sel) => { setTasks(tasks); setSelected(sel)}} />
+          <div className="app__plus" onClick={()=> setOpen(op => !op)}>
             <HiOutlinePlusSm />
           </div>
         </div>
@@ -36,7 +43,7 @@ function App() {
           return <SingleTask key={task.id} content={task.content} id={task.id} setDone={setDone} />;
         })}
       </div>
-      <Modal />
+      <Modal isOpen={open} close={()=> setOpen(false)}/>
     </>
   );
 }

@@ -5,13 +5,13 @@ import { Option } from "../Option/Option";
 import "./Dropdown.css";
 export const Dropdown = ({fetchSelPlanner}) => {
   const [open, setOpen] = useState(false);
-  const [selected,setSelected] = useState("")
+  const [selected,setSelected] = useState({})
   const [planners, setPlanners] = useState([])
   useEffect(()=> {
     getPlanners().then(res => setPlanners(res))
   }, [])
   useEffect(()=> {
-    fetchSelPlanner(selected?.tasks)
+    fetchSelPlanner(selected?.tasks, selected?.id || "")
   }, [selected])
   return (
     <>
@@ -27,7 +27,6 @@ export const Dropdown = ({fetchSelPlanner}) => {
                       <Option plannerName={planner.name} />
                   </div>
           })}
-            {/* map planners here using <Option /> component */}
         </div>
         }
       </div>
