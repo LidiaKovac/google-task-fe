@@ -21,10 +21,7 @@ function App() {
     }
   }, [tasks]);
   useEffect(() => {
-    //in the beginning, we want to see ALL tasks
-    // if (!tasks) {
     getTasks().then((res) => setTasks(selected ? res.filter((task) => task.plannerId === selected) : res));
-    // }
   }, [selected, open]);
   useEffect(() => {
     getPlanners().then((res) => setPlanners(res));
